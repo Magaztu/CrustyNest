@@ -1,9 +1,18 @@
 import { Injectable } from "@nestjs/common";
 
+export interface IUser {
+    name: string,
+    last_name: string | null,
+    age?: number
+}
+
 @Injectable() // Permite injectar código, o reutilizarlo, en otras partes del proyecto.
 export class TasksService{
-    getTasks(){
-        return ['Task 1', 'Task 2', 'Task 3']
+    getTasks(): IUser{
+        return {
+            name: "John",
+            last_name:"Doe"
+        }
     }
     testing(){
         return "testeadito"
