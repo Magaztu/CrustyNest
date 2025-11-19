@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Patch, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query } from "@nestjs/common";
 import { TasksService } from './tasks.service';
 
 @Controller('/tasks')
@@ -11,15 +11,25 @@ export class TaskController{
     } // Inyectar un servicio
 
     @Get() // Decorador que indica la ruta y el método HTTP para llamar a la función
-    getAllTasks(){
+    getAllTasks(@Query() query: any){
 
         // Buscar algo en databases
         // Crear peticiones
         // No es obligatorio return
 
         // return "Obteniendo todas las tareas de la App"
+        console.log(JSON.stringify(query));
         return this.TasksService.getTasks();
         // return this.TasksService.testing();
+    }
+
+    // Esto es /tasks/2
+
+    @Get('/:id') // El :id es un parametro
+    getTask(@Param('id') id: string){       // El decorador @Param recibe el nombre del parametro que se usa en /:
+        // console.log(id)
+        return this.TasksService.getTask(parseInt(id));
+        //@Param es una forma de recibir valores dinámicamente de URLs
     }
 
     // @Get('/')
@@ -28,8 +38,9 @@ export class TaskController{
     // }
 
     @Post()
-    createTask(){
-        return this.TasksService.createTask();
+    createTask(@Body() task: any){
+        // console.log(task)
+        return this.TasksService.createTask(task);
     }
 
     @Put() // Actualiza TODO el registro y sus campos (reemplaza el objeto) | Completa

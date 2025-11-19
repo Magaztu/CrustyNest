@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException, HttpCode } from "@nestjs/common";
 
 export interface IUser {
     name: string,
@@ -8,17 +8,33 @@ export interface IUser {
 
 @Injectable() // Permite injectar código, o reutilizarlo, en otras partes del proyecto.
 export class TasksService{
-    getTasks(): IUser{
-        return {
-            name: "John",
-            last_name:"Doe"
-        }
+
+    private tasks: any[] = [];
+
+    getTasks() {
+        return this.tasks
     }
+
+    getTask(id: number){
+        const taskFound = this.tasks.find(task => task.id === id)
+        if (!taskFound){
+            // return "No se encontró la pibitarea"
+            // throw new Error("Task not found") // Poco común
+            return new NotFoundException(`Task with id ${id} not found`);
+        }
+        return taskFound
+    }
+
     testing(){
         return "testeadito"
     }
-    createTask(){
-        return "Creando tareas"
+    createTask(task: any){
+        this.tasks.push(
+            {...task,
+            id: this.tasks.length + 1}
+        )
+        console.log(task)
+        return task
     }
     deleteTask(){
         return "Eliminando tarea"
