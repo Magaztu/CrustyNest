@@ -1,5 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query } from "@nestjs/common";
 import { TasksService } from './tasks.service';
+import type { CreateTaskDto } from "./dto/create-task.dto";
+import type { UpdateTaskDto } from "./dto/update-task.dto";
 
 @Controller('/tasks')
 export class TaskController{
@@ -38,14 +40,14 @@ export class TaskController{
     // }
 
     @Post()
-    createTask(@Body() task: any){
+    createTask(@Body() task: CreateTaskDto){
         // console.log(task)
         return this.TasksService.createTask(task);
     }
 
     @Put() // Actualiza TODO el registro y sus campos (reemplaza el objeto) | Completa
-    updateTask(){
-        return this.TasksService.updateTask();
+    updateTask(@Body() task: UpdateTaskDto){
+        return this.TasksService.updateTask(task);
     }
 
     @Delete()
