@@ -1,6 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, UsePipes, ValidationPipe } from "@nestjs/common";
 import { TasksService } from './tasks.service';
-import type { CreateTaskDto } from "./dto/create-task.dto";
+import { CreateTaskDto } from "./dto/create-task.dto";
 import type { UpdateTaskDto } from "./dto/update-task.dto";
 
 @Controller('/tasks')
@@ -40,6 +40,7 @@ export class TaskController{
     // }
 
     @Post()
+    @UsePipes(new ValidationPipe) // Otro decorador, permite usar pipes, en este caso uno para validar según los decoradores definidos en el DTO
     createTask(@Body() task: CreateTaskDto){
         // console.log(task)
         return this.TasksService.createTask(task);
