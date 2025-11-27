@@ -1,6 +1,7 @@
-import { Controller, Get, HttpCode, Param, ParseBoolPipe, ParseIntPipe, Query, Req, Res } from '@nestjs/common';
+import { Controller, Get, HttpCode, Param, ParseBoolPipe, ParseIntPipe, Query, Req, Res, UseGuards } from '@nestjs/common';
 import type { Request, Response } from 'express';
 import { ValidateuserPipe } from './pipes/validateuser/validateuser.pipe';
+import { AuthGuard } from './guards/auth/auth.guard';
 
 // Controlador generado con comando, se conectó automáticamente al app.module.ts
 @Controller() // Si tiene argumentos, debe existir este nombre en la ruta
@@ -60,6 +61,7 @@ export class HelloController {
 
     // Crear Pipes propios
     @Get('/greet')
+    @UseGuards(AuthGuard)
     greet(@Query(ValidateuserPipe) query: {name: string, age: number}){
         console.log(typeof query.name)
         console.log(typeof query.age)
